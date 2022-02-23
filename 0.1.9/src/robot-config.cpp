@@ -11,6 +11,10 @@ controller Controller;
 competition Competition;
 color Color;
 
+/*rotation leftRotationSensor(PORT5, true);
+rotation rightRotationSensor(PORT6, false);
+rotation backRotationSensor(PORT14, false);*/
+
 motor frontLeftMotor(PORT8, ratio18_1, false);
 motor middleLeftMotor(PORT9, ratio18_1, false);
 motor backLeftMotor(PORT10, ratio18_1, false);
@@ -19,18 +23,17 @@ motor frontRightMotor(PORT18, ratio18_1, true);
 motor middleRightMotor(PORT19, ratio18_1, true);
 motor backRightMotor(PORT20, ratio18_1, true);
 
-motor fourBarMotor(PORT1, ratio36_1, true);
+motor fourBarMotor(PORT1, ratio36_1, false);
 
-motor ringLiftMotor(PORT11, ratio6_1, false);
+motor ringLiftMotor(PORT11, ratio6_1, true);
 
 //inertial inertialSensor(PORT13);
 
 /*distance clawDistanceSensor(PORT12);
 optical clawOpticalSensor(PORT15, false);*/
 
-digital_out leftClawSolenoid(Brain.ThreeWirePort.A);
-digital_out rightClawSolenoid(Brain.ThreeWirePort.B);
-digital_out backLiftSolenoid(Brain.ThreeWirePort.C);
+digital_out clawSolenoid(Brain.ThreeWirePort.A);
+digital_out backLiftSolenoid(Brain.ThreeWirePort.B);
 
 /*limit fourBarBottomLimit(Brain.ThreeWirePort.C);
 limit fourBarTopLimit(Brain.ThreeWirePort.D);*/
@@ -38,6 +41,28 @@ limit fourBarTopLimit(Brain.ThreeWirePort.D);*/
 motor_group leftMotors(frontLeftMotor, middleLeftMotor, backLeftMotor);
 motor_group rightMotors(frontRightMotor, middleRightMotor, backRightMotor);
 motor_group driveMotors(frontLeftMotor, middleLeftMotor, backLeftMotor, frontRightMotor, middleRightMotor, backRightMotor);
+
+//calibrate inertial and reset rotation sensors
+/*void sensorInit(){
+  Brain.Screen.clearScreen();
+  Brain.Screen.setPenColor(white);
+  Brain.Screen.setFillColor(black);
+  Brain.Screen.setFont(mono40);
+  Brain.Screen.render();
+  Brain.Screen.printAt(0, 40, "Initializing Sensors");
+  Brain.Screen.render();
+
+  inertialSensor.calibrate();
+  waitUntil(!inertialSensor.isCalibrating());
+
+  leftRotationSensor.resetPosition();
+  rightRotationSensor.resetPosition();
+  backRotationSensor.resetPosition();
+
+  Brain.Screen.clearScreen();
+  Brain.Screen.render();
+  Brain.Screen.setFont(mono20);
+}
 
 //init auton configs with default values, will be overridden
 teamColor tc = RED;
@@ -85,16 +110,31 @@ void autonInit(){
     autonVersionStrings[int_av].c_str(),
     autonTypeStrings[int_at].c_str()
   );
-}
+}*/
 
 //set motor brake
 void motorInit(){
+  fourBarMotors.setStopping(hold);
+  ringLiftMotor.setStopping(coast);
+  backLiftMotor.setStopping(hold);
   driveMotors.setStopping(brake);
+
+  fourBarMotors.setMaxTorque(100, pct);
+  backLiftMotor.setMaxTorque(100, pct);
 
   driveMotors.resetPosition();
   driveMotors.resetRotation();
-}
 
+  fourBarMotors.resetPosition();
+  fourBarMotors.resetRotation();
+
+  ringLiftMotor.resetPosition();
+  ringLiftMotor.resetRotation();
+
+  backLiftMotor.resetPosition();
+  backLiftMotor.resetRotation();
+}
+/*
 bool cancel;
 int error(std::string str1, std::string str2, bool cond)
 {
@@ -161,7 +201,55 @@ bool checkDevices(bool p_cancel)
       error(ss.str(), ss2.str(), !backRightMotor.installed());
       return false;
     }
+    else if(!backLiftMotor.installed())
+    {
+      ss << s << "BACK LIFT"; ss2 << s2 << backLiftMotor.index() + 1;
+      error(ss.str(), ss2.str(), !backLiftMotor.installed());
+      return false;
+    }
+    else if(!ringLiftMotor.installed())
+    {
+      ss << s << "RING LIFT"; ss2 << s2 << ringLiftMotor.index() + 1;
+      error(ss.str(), ss2.str(), !ringLiftMotor.installed());
+      return false;
+    }
+    else if(!leftFourBarMotor.installed())
+    {
+      ss << s << "LEFT FOURBAR"; ss2 << s2 << leftFourBarMotor.index() + 1;
+      error(ss.str(), ss2.str(), !leftFourBarMotor.installed());
+      return false;
+    }
+    else if(!rightFourBarMotor.installed())
+    {
+      ss << s << "RIGHT FOURBAR"; ss2 << s2 << rightFourBarMotor.index() + 1;
+      error(ss.str(), ss2.str(), !rightFourBarMotor.installed());
+      return false;
+    }
+    else if(!inertialSensor.installed())
+    {
+      ss << ses << "INERTIAL"; ss2 << s2 << inertialSensor.index() + 1;
+      error(ss.str(), ss2.str(), !inertialSensor.installed());
+      return false;
+    }
+    else if(!leftRotationSensor.installed())
+    {
+      ss << ses << "LEFT ROTATION"; ss2 << s2 << leftRotationSensor.index() + 1;
+      error(ss.str(), ss2.str(), !leftRotationSensor.installed());
+      return false;
+    }
+    else if(!rightRotationSensor.installed())
+    {
+      ss << ses << "RIGHT ROTATION"; ss2 << s2 << rightRotationSensor.index() + 1;
+      error(ss.str(), ss2.str(), !rightRotationSensor.installed());
+      return false;
+    }
+    else if(!backRotationSensor.installed())
+    {
+      ss << ses << "BACK ROTATION"; ss2 << s2 << backRotationSensor.index() + 1;
+      error(ss.str(), ss2.str(), !backRotationSensor.installed());
+      return false;
+    }
     else return true;
   }
   else return true;
-}
+}*/
