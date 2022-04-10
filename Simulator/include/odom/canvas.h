@@ -1,5 +1,6 @@
 #pragma once
-#include "odom/vector.h"
+#include "odom/path-point.h"
+#include "odom/general.h"
 
 namespace PurePursuit{
   extern double slider1Value, slider2Value, slider3Value;
@@ -41,14 +42,13 @@ namespace PurePursuit{
   extern void drawLineToPoint(Vector &origin, Vector &point, int width);
 
   //draws array of points
-  extern void drawWaypoints(std::vector<Vector> points);
+  extern void drawWaypoints(std::vector<WayPoint> &points);
 
-  extern double fullMin;
-  extern double fullMax;
+  extern void drawPath(std::vector<PathPoint> &path, double min, double max);
 
-  //TODO: need to add draw functions here
+  extern void drawLookahead(Vector &currPos, Vector &lookahead, double lookaheadDist, Vector &projectedLookahead);
 
-  void drawPath();//idk what param types
+  extern void drawClosest(Vector &currPos, Vector &closest);
 
-  void drawLookahead();
+  extern void drawCurvature(double curvature, Vector &p1, Vector &p2);
 }

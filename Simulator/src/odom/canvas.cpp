@@ -1,12 +1,13 @@
 #include "odom/canvas.h"
 
 namespace PurePursuit{
+  double slider1Value = 30, slider2Value = 1, slider3Value = 0.5;
   //canvas constants and globals
-  const double canvasScale = 1;
+  const double canvasScale = 240 / 144;
   const int marginOffset = 0;
 
-  const int wayPointWidth = 2;
-  const int pointWidth = 1;
+  const int wayPointWidth = 3;
+  const int pointWidth = 2;
 
   sliders_ sliders{0, 0, 0};
 
@@ -92,17 +93,100 @@ namespace PurePursuit{
   //canvas functions
 
   //scales sim coords to canvas coords
-  Vector localToCanvas(Vector point){
+  Vector localToCanvas(Vector &point){
     return Vector(point.x() * canvasScale, point.y() * canvasScale);
   }
 
   //scales canvas coords to sim coords
-  Vector canvasToLocal(Vector point){
+  Vector canvasToLocal(Vector &point){
     return Vector(point.x() / canvasScale, (canvasHeight - point.y()) / canvasScale);
   }
 
-  double fullMin = 1/0.;
-  double fullMax = 0;
+  //draws a line from origin to point then draws a point
+  void drawLineToPoint(Vector &origin, Vector &point, int width){
+    Brain.Screen.drawCircle(point.x(), point.y(), width);
+    Brain.Screen.drawLine(origin.x(), origin.y(), point.x(), point.y());
+  }
 
-  //TODO: need to add draw functions here
+  //draws array of points
+  void drawWaypoints(std::vector<WayPoint> &points){
+    Brain.Screen.setFillColor("#FF7F00");
+    for(int i = 0; i < points.size(); i++){
+      Vector iVec = points[i].vector();
+      Vector cPoint = localToCanvas(iVec);
+      Brain.Screen.drawCircle(cPoint.x(), cPoint.y(), wayPointWidth);
+    }
+  }
+
+  void drawPath(std::vector<PathPoint> &path, double min, double max){
+    //curvature color calculations
+    Brain.Screen.setPenWidth(2);
+    for(int i = 0; i < path.size(); i++){
+      double canvasX = path[i].x() * canvasScale;
+      double canvasY = path[i].y() * canvasScale;
+      vex::color style = percToMultColor(path[i].velocity, min, max);
+      Brain.Screen.setPenColor(style);
+      Brain.Screen.setFillColor(style);
+      //draw points
+      Brain.Screen.drawCircle(canvasX, canvasHeight - canvasY, pointWidth);
+      //draw lines
+      if(i < path.size() - 1){
+        double lastX = path[i+1].x() * canvasScale;
+        double lastY = path[i+1].y() * canvasScale;
+        Brain.Screen.drawLine(
+          canvasX, canvasHeight - canvasY,
+          lastX, canvasHeight - lastY
+        );
+      }
+    }
+  }
+
+  void drawLookahead(Vector &currPos, Vector &lookahead, double lookaheadDist, Vector &projectedLookahead){
+    Brain.Screen.setPenColor("#FF0087");
+    Brain.Screen.setFillColor("#FF0087");
+    Brain.Screen.setPenWidth(3);
+    Vector lookaheadVec = localToCanvas(lookahead);
+    drawLineToPoint(currPos, lookaheadVec, 5);
+    Brain.Screen.setPenColor(ClrWhite);
+    Brain.Screen.setFillColor(ClrWhite);
+    Brain.Screen.setPenWidth(1);
+    Vector projLookVec = localToCanvas(projectedLookahead);
+    drawLineToPoint(currPos, projLookVec, 4);
+    Brain.Screen.setPenWidth(1);
+    Brain.Screen.drawCircle(currPos.x(), currPos.y(), lookaheadDist * canvasScale);
+  }
+
+  void drawClosest(Vector &currPos, Vector &closest){
+    Brain.Screen.setPenColor("#2B00BA");
+    Brain.Screen.setFillColor("#2B00BA");
+    Vector closVec = localToCanvas(closest);
+    drawLineToPoint(currPos, closVec, 3);
+  }
+
+  void drawCurvature(double curvature, Vector &p1, Vector &p2){
+    Brain.Screen.setPenColor(ClrWhite);
+    Brain.Screen.setFillColor(transparent);
+    Brain.Screen.setPenWidth(1);
+
+    if(std::abs(curvature) < 0.005)
+      curvature = 0.005;
+
+    double radius = std::abs(1 / curvature);
+
+    double x3 = (p1.x() + p2.x()) / 2;
+    double y3 = (p1.y() + p2.y()) / 2;
+    double q = std::hypot(p1.x() - p2.x(), p1.y() - p2.y());
+
+    double b = std::sqrt(std::pow(radius, 2) - std::pow(q / 2, 2));
+    double x = x3 - b * (p1.y() - p2.y()) / q * sgn(curvature);
+    double y = y3 - b * (p2.x() - p1.x()) / q * sgn(curvature);
+
+    Vector localPoint(x, y);
+    Vector canvasPoint = localToCanvas(localPoint);
+
+    Brain.Screen.drawCircle(
+      canvasPoint.x(), canvasPoint.y(),
+      std::abs(1 / curvature * canvasScale)
+    );
+  }
 }

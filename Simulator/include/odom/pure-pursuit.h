@@ -4,8 +4,8 @@
 #include "odom/simulator.h"
 
 namespace PurePursuit{
-  double angleBetweenPoints(Vector target, Vector current);
-  double angleToPoint(Vector target, Vector current, double heading);
+  extern double angleBetweenPoints(Vector target, Vector current);
+  extern double angleToPoint(Vector target, Vector current, double heading);
 
   class PurePursuit{
   private:
@@ -15,9 +15,8 @@ namespace PurePursuit{
 
     Bot bot;
 
-    //int? maybe double
     int lastClosestIndex, lastLookIndex;
-    int lastLookT; //unknown type
+    double lastLookT;
     bool isFinished;
 
     Vector lastPos;

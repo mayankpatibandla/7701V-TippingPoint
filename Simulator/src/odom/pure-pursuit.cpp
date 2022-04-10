@@ -1,6 +1,14 @@
 #include "odom/pure-pursuit.h"
 
 namespace PurePursuit{
+  double angleBetweenPoints(Vector target, Vector current){
+    return rollAngle180(std::atan2(target.y() - current.y(), target.x() - current.x()));
+  }
+
+  double angleToPoint(Vector target, Vector current, double heading){
+    return rollAngle180(angleBetweenPoints(target, current) - heading);
+  }
+
   PurePursuit::PurePursuit(Vector &pos):
     bot(localToCanvas(pos), 0),
     lastPos(bot.getLocalPos())
@@ -35,8 +43,7 @@ namespace PurePursuit{
     bool onPath = Vector::distance(currentPos, closestPointVector) <= lookDistance;
 
     Vector lookPoint = findLookahead(currentPos);
-    Vector projectedLookPoint = ((lookPoint - currentPos).normalized() * lookDistance) + currentPos;
-    Vector finalLookPoint = projectedLookPoint;
+    Vector finalLookPoint = ((lookPoint - currentPos).normalized() * lookDistance) + currentPos;
 
     Vector endPointVector = path[path.size()-1].vector();
     bool endInLookahead = 
@@ -143,9 +150,8 @@ namespace PurePursuit{
       //prioritize further down path
       if(t2 >= 0 && t2 <= 1)
         return t2;
-      else if(t1 >= 0 && t1 <= 1){
+      else if(t1 >= 0 && t1 <= 1)
         return t1;
-      }
     }
 
     //no intersection found; returns nan
@@ -169,7 +175,7 @@ namespace PurePursuit{
 
       double intersectionT = findIntersectT(segmentStart, segmentEnd, currentPos);
       if(!std::isnan(intersectionT)){
-        //if the seg is further alon or the fractional index is greater, then this is the correct point
+        //if the seg is further along or the fractional index is greater, then this is the correct point
         if(i > lastLookIndex || intersectionT > lastLookT){
           lastLookIndex = i;
           lastLookT = intersectionT;

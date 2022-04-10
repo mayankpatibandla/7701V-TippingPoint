@@ -24,8 +24,8 @@ namespace PurePursuit{
   
   private:
     pos_ pos;
-    vel_ vel{0, 0};
-    spd_ spd{0, 0};
+    vel_ vel;
+    spd_ spd;
 
   public:
     Bot(Vector v, double a);

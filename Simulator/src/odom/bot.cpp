@@ -13,6 +13,8 @@ namespace PurePursuit{
 
   Bot::Bot(Vector v, double a){
     pos = {v.x(), v.y(), a};
+    vel = {0, 0};
+    spd = {0, 0};
   }
 
   void Bot::tank(double left, double right){
@@ -48,7 +50,7 @@ namespace PurePursuit{
     //only for sim, get actual values from tracking wheels (I think)
     double dA = (spd.r - spd.l) * SPEEDLIM / M_PI;
     pos.a -= dA;
-    pos.a = rollAngle360(pos.a);
+    pos.a = rollAngle180(pos.a);
 
     double xVel = std::cos(pos.a) * (spd.r + spd.l) * SPEEDLIM;
     double yVel = std::sin(pos.a) * (spd.r + spd.l) * SPEEDLIM;
@@ -61,6 +63,29 @@ namespace PurePursuit{
   }
 
   void Bot::draw(){
-    //TODO: implement draw function
+    Brain.Screen.setPenColor(ClrBlack);
+    Brain.Screen.setFillColor(ClrBlack);
+    Brain.Screen.setPenWidth(1);
+
+    Brain.Screen.drawCircle(pos.x, pos.y, 2);
+
+    Brain.Screen.drawLine(pos.x, pos.y, pos.x + std::cos(pos.a) * 15, pos.y + std::sin(pos.a) * 15);
+
+    Brain.Screen.setPenWidth(2);
+    Brain.Screen.setPenColor(ClrGreen);
+
+    Brain.Screen.drawLine(
+      pos.x + std::cos(pos.a + M_PI_2) * 10,
+      pos.y + std::sin(pos.a + M_PI_2) * 10,
+      pos.x + std::cos(pos.a + M_PI_2) * 10 + spd.r * 20 * std::cos(pos.a),
+      pos.y + std::sin(pos.a + M_PI_2) * 10 + spd.r * 20 * std::sin(pos.a)
+    );
+
+    Brain.Screen.drawLine(
+      pos.x + std::cos(pos.a - M_PI_2) * 10,
+      pos.y + std::sin(pos.a - M_PI_2) * 10,
+      pos.x + std::cos(pos.a - M_PI_2) * 10 + spd.l * 20 * std::cos(pos.a),
+      pos.y + std::sin(pos.a - M_PI_2) * 10 + spd.l * 20 * std::sin(pos.a)
+    );
   }
 }

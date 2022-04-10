@@ -54,6 +54,8 @@ function maintainCanvas() {
   sliders.lookahead = slider3.value / 1000;
   slider3_val.innerHTML = sliders.lookahead;
 
+  //console.log(`Res: ${sliders.resolution}, Scalar: ${sliders.scalar}, Look: ${sliders.lookahead}`);
+
   if (showRect) {
     c.beginPath();
     c.lineWidth = "2";
