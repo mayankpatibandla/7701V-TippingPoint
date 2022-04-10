@@ -57,6 +57,38 @@ namespace PurePursuit{
   double computeSingleCurvature(PathPoint &prevPoint, PathPoint &point, PathPoint &nextPoint){
     double dist1 = distPathPoint(point, prevPoint);
     double dist2 = distPathPoint(point, nextPoint);
-    double dist3 = 
+    double dist3 = distPathPoint(nextPoint, prevPoint);
+
+    double productOfSides = dist1 * dist2 * dist3;
+    double semiPerimeter = (dist1 + dist2 + dist3) / 2;
+    double triangleArea = std::sqrt(semiPerimeter * (semiPerimeter - dist1) * (semiPerimeter - dist2) * (semiPerimeter - dist3));
+
+    double r = (productOfSides) / (4 * triangleArea);
+    double curvature = std::isnan(1/r) ? 0 : 1/r;
+
+    return curvature;
+  }
+
+  std::vector<PathPoint> computeCurvatures(std::vector<PathPoint> &path){
+    path[0].setCurvature(0);
+    for(int i = 1; i < path.size() - 1; i++){
+      double curvature = computeSingleCurvature(path[i-1], path[i], path[i+1]);
+      path[i].setCurvature(curvature);
+    }
+    path[path.size()-1].setCurvature(0);
+    return path;
+  }
+
+  std::vector<PathPoint> computeVelocity(std::vector<PathPoint> &path, double maxVel, double maxRate, double k){
+    path[path.size()-1].setVelocity(0);
+    for(int i = path.size() - 1; i > 0; i--){
+      PathPoint &start = path[i];
+      PathPoint &end = path[i-1];
+      double wantedVel = std::min(maxVel, (k / path[i].curvature));
+      double distance = distPathPoint(start, end);
+      double newVel = std::min(wantedVel, std::sqrt(std::pow(start.velocity, 2) + (2 * maxRate * distance)));
+      path[i-1].setVelocity(newVel);
+    }
+    return path;
   }
 }

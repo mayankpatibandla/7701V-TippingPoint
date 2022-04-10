@@ -1,7 +1,7 @@
 #include "odom/general.h"
 
 namespace PurePursuit{
-  template<typename T> int sgn(T value){
+  template<typename T> int sgn(const T &value){
     return (T(0) < value) - (value < T(0));
   }
 
