@@ -4,5 +4,8 @@
 using namespace vex;
 
 int main() {
-  test();
+  Brain.Screen.clearScreen("#FFFFFF");
+  Brain.Screen.render();
+
+  PurePursuit_ns::main();
 }

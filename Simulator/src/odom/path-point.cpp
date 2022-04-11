@@ -1,7 +1,7 @@
 #include "vex.h"
 #include "odom/path-point.h"
 //{}
-namespace PurePursuit{
+namespace PurePursuit_ns{
   PathPoint::PathPoint(double x, double y){
     loc[0] = x; loc[1] = y;
     distance = 0;

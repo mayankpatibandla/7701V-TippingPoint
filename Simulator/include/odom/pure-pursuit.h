@@ -1,9 +1,15 @@
 #pragma once
 #include "odom/bot.h"
 #include "odom/path-point.h"
-#include "odom/simulator.h"
+//#include "odom/simulator.h"
 
-namespace PurePursuit{
+namespace PurePursuit_ns{
+  //Pursuit constants
+  extern const double
+    minVel, maxVel,
+    maxAccel,
+    turnK;
+    
   extern double angleBetweenPoints(Vector target, Vector current);
   extern double angleToPoint(Vector target, Vector current, double heading);
 
@@ -26,7 +32,7 @@ namespace PurePursuit{
     PurePursuit(Vector &pos);
 
     void setPath(std::vector<PathPoint> &path);
-    void setlookDistance(double lookDistance);
+    void setLookDistance(double lookDistance);
     void setRobotTrack(double robotTrack);
 
     void update();

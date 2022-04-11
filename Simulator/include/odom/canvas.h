@@ -2,7 +2,7 @@
 #include "odom/path-point.h"
 #include "odom/general.h"
 
-namespace PurePursuit{
+namespace PurePursuit_ns{
   extern double slider1Value, slider2Value, slider3Value;
 
   //canvas constants and globals
@@ -16,6 +16,7 @@ namespace PurePursuit{
   struct sliders_{
     double resolution, scalar, lookahead;
   };
+  extern sliders_ sliders;
 
   //utility functions
   extern void maintainCanvas();

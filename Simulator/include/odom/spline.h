@@ -2,7 +2,7 @@
 #include "odom/path-point.h"
 #include "odom/waypoint.h"
 
-namespace PurePursuit{
+namespace PurePursuit_ns{
   class QuinticPolynomial{
   private:
     double coeffs[6];
@@ -36,6 +36,6 @@ namespace PurePursuit{
 
   public:
     QuinticPathPlanner(std::vector<WayPoint> &points, int steps, double slopeScalar = 0.8);
-    std::vector<WayPoint> getPath();
+    std::vector<PathPoint> getPath();
   };
 }

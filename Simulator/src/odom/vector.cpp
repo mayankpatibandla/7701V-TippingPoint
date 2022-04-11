@@ -1,7 +1,7 @@
 #include "vex.h"
 #include "odom/vector.h"
 //{}
-namespace PurePursuit{
+namespace PurePursuit_ns{
   Vector::Vector(double x, double y):
     ix(x), iy(y)
   {}

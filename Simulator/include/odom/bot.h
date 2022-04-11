@@ -2,7 +2,7 @@
 #include "odom/general.h"
 #include "odom/canvas.h"
 
-namespace PurePursuit{
+namespace PurePursuit_ns{
   extern const double SPEEDLIM;
 
   template<typename T> extern T clamp(const T &n, const T &lower, const T &upper);

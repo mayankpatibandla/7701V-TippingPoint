@@ -1,6 +1,6 @@
 #include "odom/path-point.h"
 
-namespace PurePursuit{
+namespace PurePursuit_ns{
   extern double distPathPoint(PathPoint &a, PathPoint &b);
 
   extern std::vector<PathPoint> insertPoints(std::vector<Vector> &points, double resolution);

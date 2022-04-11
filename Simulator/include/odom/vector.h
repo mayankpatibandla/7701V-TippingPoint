@@ -1,7 +1,7 @@
 #pragma once
 #include "vex.h"
 //{}
-namespace PurePursuit{
+namespace PurePursuit_ns{
   class Vector{
   private:
     double ix, iy;

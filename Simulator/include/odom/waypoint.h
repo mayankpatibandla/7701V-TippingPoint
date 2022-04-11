@@ -1,7 +1,7 @@
 #pragma once
 #include "odom/vector.h"
 //[]
-namespace PurePursuit{
+namespace PurePursuit_ns{
   class WayPoint{
   public:
     double x, y, theta, vel;

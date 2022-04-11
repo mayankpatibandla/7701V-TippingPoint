@@ -1,6 +1,6 @@
 #include "odom/spline.h"
 
-namespace PurePursuit{
+namespace PurePursuit_ns{
   QuinticPolynomial::QuinticPolynomial(double xstart, double vstart, double xend, double vend){
     double u = xend - xstart - vstart;
     double v = vend - xstart;
@@ -95,5 +95,9 @@ namespace PurePursuit{
   {
     generateVelocities();
     generatePath();
+  }
+
+  std::vector<PathPoint> QuinticPathPlanner::getPath(){
+    return path;
   }
 }
