@@ -3,36 +3,26 @@
 #include "auton-functions.h"
 #include <vector>
 
-int findVTurnDir(int currentPos)
-{
-  if(currentPos < 158) return -1;
-  return 1;
-}
-
 void testAuton(){
-
-  PID slow(0.15);
-  driveRelative(-36, 0, slow);
-
-  /*
-  frontVisionSensor.setSignature(REDMOGO);
   Brain.Screen.setFont(mono60);
 
-  while(true)
-  {
+  const double kP = 0.13;
+
+  while(true){
     frontVisionSensor.takeSnapshot(REDMOGO);
+    vision::object &obj = frontVisionSensor.largestObject;
 
-    double currentPos = frontVisionSensor.largestObject.centerX;
-
-    if((!obj.exists))
-    {
+    double currentPos = obj.centerX;
+    
+    if(!obj.exists){
       Brain.Screen.clearScreen();
       Brain.Screen.setCursor(1, 1);
       Brain.Screen.print("OBJECT NOT FOUND");
       Brain.Screen.render();
     }
+    
     double error = 158 - currentPos;
-    double pow = error * 0.125;
+    double pow = error * kP;
 
     Brain.Screen.clearScreen();
     Brain.Screen.setCursor(1, 1);
@@ -44,8 +34,8 @@ void testAuton(){
     leftMotors.spin(fwd, -pow, pct);
     rightMotors.spin(fwd, pow, pct);
 
-    wait(1, msec);
-    if(error < 1) break;
+    if(error < 5) break;
+    wait(10, msec);
   }
-  driveMotors.stop();*/
+  driveMotors.stop();
 }
