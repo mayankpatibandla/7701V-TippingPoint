@@ -27,6 +27,9 @@ void driver(){
 
   timer dumpAirTimer;
 
+  bool manualOverride = false;
+  bool manualOverrideWasPressed = false;
+
   Controller.ButtonA.pressed(toggleClaw);
   Controller.ButtonY.pressed(toggleBackLift);
 
@@ -36,6 +39,14 @@ void driver(){
       if(!Competition.isCompetitionSwitch() && !Competition.isFieldControl()){
         auton();
       }
+      else{
+        if(!manualOverrideWasPressed)
+          manualOverride = !manualOverride;
+        manualOverrideWasPressed = true;
+      }
+    }
+    else{
+      manualOverrideWasPressed = false;
     }
 
     if(Controller.ButtonLeft.pressing() && Controller.ButtonUp.pressing() && Controller.ButtonR1.pressing() && Controller.ButtonR2.pressing() && dumpAirTimer.time(msec) > 9){
@@ -73,7 +84,7 @@ void driver(){
       ringLiftMotor.spin(fwd, -12, volt);
     }
     else if(Controller.ButtonX.pressing() || ringLift){
-      ringLiftMotor.spin(fwd, 12, volt);
+      ringLiftMotor.spin(fwd, 12 * 0.925, volt);
       ringLiftJam = false;
     }
     else{

@@ -12,7 +12,7 @@ void leftSideAWP1NeutralAuton(){
   driveRelative(28, 1100, slowFwd);
 
   //get first short yellow
-  turnToAngle(-M_PI_2-M_PI_4 + 0.35); //+0.45
+  turnToAngle(-M_PI_2-M_PI_4 + 0.465); //+0.45
   ringLiftMotor.spin(fwd, 12, volt);
   toggleClaw();
   driveRelative(51, 1800, slowFwd);

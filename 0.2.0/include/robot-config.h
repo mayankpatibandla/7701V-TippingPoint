@@ -26,8 +26,32 @@ extern motor middleRightMotor;
 extern motor backRightMotor;
 
 extern motor fourBarMotor;
-extern rotation fourBarRotationSensor;
-extern const double fourBarMinPos, fourBarMaxPos;
+
+class rotation_x : public vex::rotation{
+private:
+  double wrapAngle(double theta){
+    double temp_theta = fmod(theta, 2 * M_PI);
+    if(temp_theta < 0) temp_theta += 2 * M_PI;
+    return temp_theta * 180 / M_PI;
+  }
+public:
+  double offset;
+  rotation_x(uint32_t index, bool reverse = false, double offset = 0) : 
+    vex::rotation(index, reverse), offset(offset)
+  {}
+
+  ~rotation_x(){}
+
+  double angle(rotationUnits units = rotationUnits::deg){
+    if(units == rotationUnits::deg) 
+      return wrapAngle(M_PI / 180 * (rotation::angle(units) + offset));
+    else
+      return rotation::angle(units);
+  }
+};
+extern rotation_x fourBarRotationSensor;
+extern const double fourBarMinPos;
+extern const double fourBarMaxPos;
 
 extern motor ringLiftMotor;
 

@@ -13,31 +13,48 @@ void rightSideAWP2NeutralAuton(){
   this_thread::sleep_for(25);
   fourBarMotor.spin(fwd, 12, volt);
   driveMotors.spin(fwd, -12, volt);
+  this_thread::sleep_for(100);
+  fourBarMotor.stop(hold);
   waitUntil(pt::x() < 5);
   driveMotors.stop();
 
   //get alliance goal
+  fourBarMotor.spin(fwd, 12, volt);
   driveMotors.spin(fwd, 50, pct);
-  fourBarMotor.stop();
   waitUntil(pt::x() > 10.25);
   driveMotors.stop();
+  waitUntil(fourBarRotationSensor.angle() > fourBarMaxPos - 10);
+  fourBarMotor.stop();
   turnToAngle(M_PI_2);
   toggleBackLift();
-  driveRelative(-16, 1200, slowFwd);
+  driveMotors.spinFor(2, sec, -35, velocityUnits::pct);
   toggleBackLift();
   this_thread::sleep_for(50);
   driveRelative(5, 1000);
 
   //get rings
   turnToAngle(0);
-  ringLiftMotor.spin(fwd, 7.5, volt);
-  driveMotors.spin(fwd, 25, pct);
+  ringLiftMotor.spin(fwd, 12 * 0.925, volt);
+  driveMotors.spin(fwd, 30, pct);
   waitUntil(pt::x() > 51);
   driveMotors.stop();
-  this_thread::sleep_for(500);
+  this_thread::sleep_for(10);
   driveMotors.spin(fwd, -100, pct);
-  waitUntil(pt::x() < 0);
+  waitUntil(pt::x() < 5);
   driveMotors.stop();
+  this_thread::sleep_for(300);
+  
+  //match loads
+  /*turnToAngle(M_PI);
+
+  for(int i = 0; i < 3; i++){
+    driveMotors.spinFor(2750, msec, 40, velocityUnits::pct);
+    driveMotors.spinFor(2200, msec, -35, velocityUnits::pct);
+  }
+
+  driveRelative(20, 2000);
+  toggleBackLift();*/
+
   toggleBackLift();
   this_thread::sleep_for(100);
   driveRelative(6, 1000);

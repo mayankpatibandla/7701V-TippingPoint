@@ -5,7 +5,7 @@
 void twoAWPAuton(){
   toggleClaw();
   driveMotors.spin(fwd, 12, volt);
-  waitUntil(pt::x() > 52);
+  waitUntil(pt::x() > 60);
   driveMotors.stop();
   this_thread::sleep_for(50);
   toggleClaw();

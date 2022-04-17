@@ -25,8 +25,11 @@ motor middleRightMotor(PORT19, ratio18_1, true);
 motor backRightMotor(PORT20, ratio18_1, true);
 
 motor fourBarMotor(PORT1, ratio36_1, true);
-rotation fourBarRotationSensor(PORT12, true);
-const double fourBarMinPos = 2, fourBarMaxPos = 255;
+
+const double fourBarRotationOffset = 15;
+const double fourBarMinPos = 18.5;
+const double fourBarMaxPos = 120;
+rotation_x fourBarRotationSensor(PORT12, true, fourBarRotationOffset);
 
 motor ringLiftMotor(PORT14, ratio6_1, false);
 
@@ -55,6 +58,7 @@ void sensorInit(){
   waitUntil(!inertialSensor.isCalibrating());
 
   fourBarRotationSensor.resetPosition();
+  fourBarRotationSensor.setPosition(fourBarRotationOffset, deg);
 
   leftRotationSensor.resetPosition();
   rightRotationSensor.resetPosition();
@@ -67,7 +71,7 @@ void sensorInit(){
 
 //init auton configs with default values, will be overridden
 teamColor tc = RED;
-teamSide ts = LEFT;
+teamSide ts = RIGHT;
 autonVersion av = AWP;
 autonType at = MAIN;
 
