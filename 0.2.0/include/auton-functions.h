@@ -17,6 +17,7 @@ extern PID turnPID_R_N;
 extern PID fwdPID_DEG_N;
 extern PID fastFwd;
 extern PID slowFwd;
+extern PID verySlowFwd;
 
 extern void turnToAngle(double theta, int timeout = 0, PID& pid = turnPID_R_N);
 extern void turnToPoint(double x, double y, int timeout = 0, PID& pid = turnPID_R_N);

@@ -66,11 +66,18 @@ extern motor_group rightMotors;
 extern motor_group driveMotors;
 extern motor_group allMotors;
 
+extern vision::signature FRONT_REDMOGO;
+extern vision::signature FRONT_BLUEMOGO;
+extern vision::signature FRONT_YELLOWMOGO;
+extern vision frontVisionSensor;
+
+extern vision::signature BACK_REDMOGO;
+extern vision::signature BACK_BLUEMOGO;
+extern vision::signature BACK_YELLOWMOGO;
+extern vision backVisionSensor;
+
 extern void sensorInit();
 extern void autonInit();
 extern void motorInit();
 
 extern bool checkDevices(bool p_cancel = false);
-
-extern vision frontVisionSensor;
-extern vision::signature REDMOGO;

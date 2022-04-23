@@ -20,8 +20,8 @@ void driver(){
   bool ringLiftWasPressed = false;
   bool ringLiftJam = false;
   bool ringLiftWasJammed = false;
-  const double ringLiftJamWait = 2000;
-  const double ringLeftResetWait = 1500;
+  const double ringLiftJamWait = 1000;
+  const double ringLiftResetWait = 1500;
   timer ringLiftJamTimer;
   timer ringLiftJamCooldownTimer;
 
@@ -37,7 +37,11 @@ void driver(){
     //auton test
     if(Controller.ButtonRight.pressing()){
       if(!Competition.isCompetitionSwitch() && !Competition.isFieldControl()){
+        uint32_t autonStart = Brain.Timer.system();
         auton();
+        double autonTime = (Brain.Timer.system() - autonStart) / 1000.;
+        Controller.Screen.clearLine(3);
+        Controller.Screen.print("Auton Time %.3f sec", autonTime);
       }
       else{
         if(!manualOverrideWasPressed)
@@ -91,7 +95,7 @@ void driver(){
       ringLiftMotor.stop();
     }
 
-    if(ringLift && std::abs(ringLiftMotor.velocity(pct)) < 20 && ringLiftJamCooldownTimer.time(msec) > ringLeftResetWait){
+    if(ringLift && std::abs(ringLiftMotor.velocity(pct)) < 20 && ringLiftJamCooldownTimer.time(msec) > ringLiftResetWait){
       if(!ringLiftWasJammed)
         ringLiftJamTimer.reset();
       ringLiftJam = true;  

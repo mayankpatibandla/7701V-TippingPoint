@@ -4,6 +4,8 @@ extern void odomTestAuton();
 extern void testAuton();
 
 extern void twoAWPAuton();
+extern void rightMidFirstAuton();
+extern void leftMidFirstAuton();
 
 extern void rightSideAWP2NeutralAuton();
 extern void rightSideAWP1NeutralAuton();

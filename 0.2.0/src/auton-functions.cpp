@@ -18,6 +18,7 @@ PID turnPID_R_N(25, 0, 3);
 PID fwdPID_DEG_N(0.2);
 PID fastFwd(0.225);
 PID slowFwd(0.15);
+PID verySlowFwd(0.075);
 
 template <typename T> int sgn(T val){
   return (T(0) < val) - (val < T(0));
@@ -250,11 +251,11 @@ void auton(){
               switch(at){
                 case MAIN:{
                   //RED LEFT NEUTRAL MAIN
-                  
+                  leftMidFirstAuton();
                 }break;
                 case OTHER:{
                   //RED LEFT NEUTRAL OTHER
-                  
+                  leftMidFirstAuton();
                 }break;
               }
             }break;
@@ -278,11 +279,11 @@ void auton(){
               switch(at){
                 case MAIN:{
                   //RED RIGHT NEUTRAL MAIN
-                  
+                  rightMidFirstAuton();
                 }break;
                 case OTHER:{
                   //RED RIGHT NEUTRAL OTHER
-
+                  rightMidFirstAuton();
                 }break;
               }
             }break;
@@ -310,11 +311,11 @@ void auton(){
               switch(at){
                 case MAIN:{
                   //BLUE LEFT NEUTRAL MAIN
-                  
+                  leftMidFirstAuton();
                 }break;
                 case OTHER:{
                   //BLUE LEFT NEUTRAL OTHER
-                  
+                  leftMidFirstAuton();
                 }break;
               }
             }break;
@@ -338,11 +339,11 @@ void auton(){
               switch(at){
                 case MAIN:{
                   //BLUE RIGHT NEUTRAL MAIN
-                  
+                  rightMidFirstAuton();
                 }break;
                 case OTHER:{
                   //BLUE RIGHT NEUTRAL OTHER
-
+                  rightMidFirstAuton();
                 }break;
               }
             }break;

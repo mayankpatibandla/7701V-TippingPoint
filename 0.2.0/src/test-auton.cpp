@@ -7,9 +7,10 @@ void testAuton(){
   Brain.Screen.setFont(mono60);
 
   const double kP = 0.13;
+  const double target = 158;
 
   while(true){
-    frontVisionSensor.takeSnapshot(REDMOGO);
+    frontVisionSensor.takeSnapshot(FRONT_REDMOGO);
     vision::object &obj = frontVisionSensor.largestObject;
 
     double currentPos = obj.centerX;
@@ -21,7 +22,7 @@ void testAuton(){
       Brain.Screen.render();
     }
     
-    double error = 158 - currentPos;
+    double error = target - currentPos;
     double pow = error * kP;
 
     Brain.Screen.clearScreen();
@@ -34,7 +35,7 @@ void testAuton(){
     leftMotors.spin(fwd, -pow, pct);
     rightMotors.spin(fwd, pow, pct);
 
-    if(error < 5) break;
+    if(error < 2.5) break;
     wait(10, msec);
   }
   driveMotors.stop();

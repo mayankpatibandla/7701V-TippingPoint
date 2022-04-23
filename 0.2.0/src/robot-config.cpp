@@ -1,5 +1,6 @@
 #include "vex.h"
 #include "auton-config.h"
+#include "color-util.h"
 #include <fstream>
 #include <sstream>
 
@@ -44,6 +45,26 @@ motor_group rightMotors(frontRightMotor, middleRightMotor, backRightMotor);
 motor_group driveMotors(frontLeftMotor, middleLeftMotor, backLeftMotor, frontRightMotor, middleRightMotor, backRightMotor);
 motor_group allMotors(frontLeftMotor, middleLeftMotor, backLeftMotor, frontRightMotor, middleRightMotor, backRightMotor, fourBarMotor, ringLiftMotor);
 
+vex::vision::signature FRONT_REDMOGO = vex::vision::signature (1, 6229, 8323, 7276, -975, -167, -571, 3, 0);
+vex::vision::signature FRONT_BLUEMOGO = vex::vision::signature (2, -3553, -2899, -3226, 11669, 14417, 13043, 3, 0);
+vex::vision::signature FRONT_YELLOWMOGO = vex::vision::signature (3, -325, 155, -85, -3625, -3059, -3342, 3, 0);
+vex::vision::signature FRONT_SIG_4 = vex::vision::signature (4, 0, 0, 0, 0, 0, 0, 2.5, 0);
+vex::vision::signature FRONT_SIG_5 = vex::vision::signature (5, 0, 0, 0, 0, 0, 0, 2.5, 0);
+vex::vision::signature FRONT_SIG_6 = vex::vision::signature (6, 0, 0, 0, 0, 0, 0, 2.5, 0);
+vex::vision::signature FRONT_SIG_7 = vex::vision::signature (7, 0, 0, 0, 0, 0, 0, 2.5, 0);
+//WIFI Name: VISION_DF1C
+vision frontVisionSensor(PORT3, 50, FRONT_REDMOGO, FRONT_BLUEMOGO, FRONT_YELLOWMOGO, FRONT_SIG_4, FRONT_SIG_5, FRONT_SIG_6, FRONT_SIG_7);
+
+vex::vision::signature BACK_REDMOGO = vex::vision::signature (1, 6229, 8323, 7276, -975, -167, -571, 3, 0);
+vex::vision::signature BACK_BLUEMOGO = vex::vision::signature (2, -3553, -2899, -3226, 11669, 14417, 13043, 3, 0);
+vex::vision::signature BACK_YELLOWMOGO = vex::vision::signature (3, -325, 155, -85, -3625, -3059, -3342, 3, 0);
+vex::vision::signature BACK_SIG_4 = vex::vision::signature (4, 0, 0, 0, 0, 0, 0, 2.5, 0);
+vex::vision::signature BACK_SIG_5 = vex::vision::signature (5, 0, 0, 0, 0, 0, 0, 2.5, 0);
+vex::vision::signature BACK_SIG_6 = vex::vision::signature (6, 0, 0, 0, 0, 0, 0, 2.5, 0);
+vex::vision::signature BACK_SIG_7 = vex::vision::signature (7, 0, 0, 0, 0, 0, 0, 2.5, 0);
+//WIFI Name: VISION_5805
+vision backVisionSensor(PORT11, 50, BACK_REDMOGO, BACK_BLUEMOGO, BACK_YELLOWMOGO, BACK_SIG_4, BACK_SIG_5, BACK_SIG_6, BACK_SIG_7);
+
 //calibrate inertial and reset rotation sensors
 void sensorInit(){
   Brain.Screen.clearScreen();
@@ -54,15 +75,35 @@ void sensorInit(){
   Brain.Screen.printAt(0, 40, "Initializing Sensors");
   Brain.Screen.render();
 
-  inertialSensor.calibrate();
-  waitUntil(!inertialSensor.isCalibrating());
-
   fourBarRotationSensor.resetPosition();
   fourBarRotationSensor.setPosition(fourBarRotationOffset, deg);
 
   leftRotationSensor.resetPosition();
   rightRotationSensor.resetPosition();
   backRotationSensor.resetPosition();
+
+  frontVisionSensor.setLedMode(vision::ledMode::manual);
+  backVisionSensor.setLedMode(vision::ledMode::manual);
+  frontVisionSensor.setLedBrightness(100);
+  backVisionSensor.setLedBrightness(100);
+
+  ColorUtil::hsl ledColor = {0, 1, 0.5};
+
+  inertialSensor.calibrate();
+  
+  while(inertialSensor.isCalibrating()){
+    uint32_t timeStart = Brain.Timer.system();
+    ledColor.h += 0.05;
+
+    ColorUtil::rgb rgbLedColor = ColorUtil::hsl2rgb(
+      ledColor.h, ledColor.s, ledColor.l
+    );
+
+    frontVisionSensor.setLedColor(rgbLedColor.r, rgbLedColor.g, rgbLedColor.b);
+    backVisionSensor.setLedColor(rgbLedColor.r, rgbLedColor.g, rgbLedColor.b);
+
+    this_thread::sleep_until(timeStart + 50);
+  }
 
   Brain.Screen.clearScreen();
   Brain.Screen.render();
@@ -245,12 +286,3 @@ bool checkDevices(bool p_cancel)
   }
   else return true;
 }
-
-vex::vision::signature REDMOGO = vex::vision::signature (1, 7761, 9363, 8562, -1281, 161, -560, 4.9, 0);
-vex::vision::signature BLUEMOGO = vex::vision::signature (2, -2011, -1145, -1578, 5387, 7453, 6420, 5.5, 0);
-vex::vision::signature YELLOWMOGO = vex::vision::signature (3, 1875, 3257, 2566, -4225, -2971, -3598, 3.3, 0);
-vex::vision::signature SIG_4 = vex::vision::signature (4, 0, 0, 0, 0, 0, 0, 2.5, 0);
-vex::vision::signature SIG_5 = vex::vision::signature (5, 0, 0, 0, 0, 0, 0, 2.5, 0);
-vex::vision::signature SIG_6 = vex::vision::signature (6, 0, 0, 0, 0, 0, 0, 2.5, 0);
-vex::vision::signature SIG_7 = vex::vision::signature (7, 0, 0, 0, 0, 0, 0, 2.5, 0);
-vex::vision frontVisionSensor = vex::vision (vex::PORT15, 50, REDMOGO, BLUEMOGO, YELLOWMOGO, SIG_4, SIG_5, SIG_6, SIG_7);
