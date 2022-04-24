@@ -37,8 +37,9 @@ int main(){
   uint32_t prevVisionColorTime = Brain.Timer.system();
 
   ColorUtil::hsl hsl_ledColor;
+  double deltaFade = 0.0156862745;
 
-  const unsigned short int colorModeCooldown = 7500;
+  const unsigned short int colorModeCooldown = 10000;
   bool colorMode = false;
   timer colorModeTimer;
 
@@ -81,11 +82,15 @@ int main(){
       }
       else{
         visionColorCooldown = 50;
-        hsl_ledColor.h += 0.0156862745;
+        hsl_ledColor.h += deltaFade;
         ledColor = ColorUtil::hsl2rgb(
           hsl_ledColor.h, hsl_ledColor.s, hsl_ledColor.l
         );
-        if(hsl_ledColor.h > 1) colorMode = false;
+        if(hsl_ledColor.h > 1) deltaFade *= -1;
+        if(hsl_ledColor.h < 0){
+          deltaFade *= -1;
+          colorMode = false;
+        }
       }
 
       frontVisionSensor.setLedColor(ledColor.r, ledColor.g, ledColor.b);

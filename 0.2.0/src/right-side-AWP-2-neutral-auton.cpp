@@ -1,6 +1,38 @@
 #include "vex.h"
 #include "auton-functions.h"
 
+void visionTurn(double timeout = 0){
+  const double kP = 0.13;
+  const double target = 158;
+
+  timer dTimer;
+
+  while(true){
+    if(dTimer.time(msec) > timeout && timeout != 0) break;
+    frontVisionSensor.takeSnapshot(tc == RED ? BACK_REDMOGO : BACK_BLUEMOGO);
+    vision::object &obj = frontVisionSensor.largestObject;
+
+    double currentPos = obj.centerX;
+    
+    if(!obj.exists){
+      Brain.Screen.clearScreen();
+      Brain.Screen.setCursor(1, 1);
+      Brain.Screen.print("OBJECT NOT FOUND");
+      Brain.Screen.render();
+    }
+    
+    double error = target - currentPos;
+    double pow = error * kP;
+
+    leftMotors.spin(fwd, -pow, pct);
+    rightMotors.spin(fwd, pow, pct);
+
+    if(error < 2.5) break;
+    wait(10, msec);
+  }
+  driveMotors.stop();
+}
+
 //RIGHT AWP MAIN
 //RIGHT 1 Yellow + line of rings
 void rightSideAWP2NeutralAuton(){
@@ -25,10 +57,11 @@ void rightSideAWP2NeutralAuton(){
   waitUntil(pt::x() > 10.25);
   driveMotors.stop();
   turnToAngle(M_PI_2, 900);
+  //visionTurn();
   waitUntil(fourBarRotationSensor.angle() > fourBarMaxPos - 25);
   fourBarMotor.stop();
   toggleBackLift();
-  driveMotors.spinFor(2, sec, -35, velocityUnits::pct);
+  driveMotors.spinFor(2, sec, -50, velocityUnits::pct);
   toggleBackLift();
   this_thread::sleep_for(50);
   driveRelative(4, 800);
@@ -139,6 +172,7 @@ void rightSideAWP1NeutralAuton(){
   driveRelative(-60, 2750);
   toggleBackLift();
   this_thread::sleep_for(50);
+  ringLiftMotor.spin(fwd, 12, volt);
   turnToAngle(0, 1250);
   driveRelative(-18, 2000);
 }

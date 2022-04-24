@@ -59,10 +59,10 @@ void driver(){
     }
 
     //fourbar
-    if(Controller.ButtonL1.pressing() && fourBarRotationSensor.angle(deg) < fourBarMaxPos){
+    if(Controller.ButtonL1.pressing() && (fourBarRotationSensor.angle(deg) < fourBarMaxPos) && !manualOverride){
       fourBarMotor.spin(fwd, 12, volt);
     }
-    else if(Controller.ButtonL2.pressing() && fourBarRotationSensor.angle(deg) > fourBarMinPos){
+    else if(Controller.ButtonL2.pressing() && (fourBarRotationSensor.angle(deg) > fourBarMinPos) && !manualOverride){
       fourBarMotor.spin(fwd, -12, volt);
     }
     else{

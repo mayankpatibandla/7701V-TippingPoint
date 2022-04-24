@@ -47,7 +47,7 @@ motor_group allMotors(frontLeftMotor, middleLeftMotor, backLeftMotor, frontRight
 
 vex::vision::signature FRONT_REDMOGO = vex::vision::signature (1, 6229, 8323, 7276, -975, -167, -571, 3, 0);
 vex::vision::signature FRONT_BLUEMOGO = vex::vision::signature (2, -3553, -2899, -3226, 11669, 14417, 13043, 3, 0);
-vex::vision::signature FRONT_YELLOWMOGO = vex::vision::signature (3, -325, 155, -85, -3625, -3059, -3342, 3, 0);
+vex::vision::signature FRONT_YELLOWMOGO = vex::vision::signature (3, 99, 2023, 1061, -3867, -3197, -3532, 3, 0);
 vex::vision::signature FRONT_SIG_4 = vex::vision::signature (4, 0, 0, 0, 0, 0, 0, 2.5, 0);
 vex::vision::signature FRONT_SIG_5 = vex::vision::signature (5, 0, 0, 0, 0, 0, 0, 2.5, 0);
 vex::vision::signature FRONT_SIG_6 = vex::vision::signature (6, 0, 0, 0, 0, 0, 0, 2.5, 0);
@@ -57,7 +57,7 @@ vision frontVisionSensor(PORT3, 50, FRONT_REDMOGO, FRONT_BLUEMOGO, FRONT_YELLOWM
 
 vex::vision::signature BACK_REDMOGO = vex::vision::signature (1, 6229, 8323, 7276, -975, -167, -571, 3, 0);
 vex::vision::signature BACK_BLUEMOGO = vex::vision::signature (2, -3553, -2899, -3226, 11669, 14417, 13043, 3, 0);
-vex::vision::signature BACK_YELLOWMOGO = vex::vision::signature (3, -325, 155, -85, -3625, -3059, -3342, 3, 0);
+vex::vision::signature BACK_YELLOWMOGO = vex::vision::signature (3, 99, 2023, 1061, -3867, -3197, -3532, 3, 0);
 vex::vision::signature BACK_SIG_4 = vex::vision::signature (4, 0, 0, 0, 0, 0, 0, 2.5, 0);
 vex::vision::signature BACK_SIG_5 = vex::vision::signature (5, 0, 0, 0, 0, 0, 0, 2.5, 0);
 vex::vision::signature BACK_SIG_6 = vex::vision::signature (6, 0, 0, 0, 0, 0, 0, 2.5, 0);
