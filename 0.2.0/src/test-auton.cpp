@@ -39,3 +39,43 @@ void testAuton(){
   }
   driveMotors.stop();
 }*/
+
+void testAuton(){
+  Brain.Screen.setFont(mono60);
+  /*while(true){
+    Brain.Screen.clearScreen();
+    Brain.Screen.setCursor(1, 1);
+    frontVisionSensor.takeSnapshot(FRONT_YELLOWMOGO);
+    Brain.Screen.print(frontVisionSensor.largestObject.centerX);
+    if(frontVisionSensor.largestObject.centerX > 164){
+      rightMotors.spin(fwd, -20, pct);
+      leftMotors.spin(fwd, 20, pct);
+    }
+    else if(frontVisionSensor.largestObject.centerX < 150){
+      rightMotors.spin(fwd, 20, pct);
+      leftMotors.spin(fwd, -20, pct);
+    }
+    else{
+      driveMotors.stop();
+    }
+    Brain.Screen.render();
+    this_thread::sleep_for(10);
+  }*/
+
+  const double kP = 0.2;
+
+  while(true){
+    Brain.Screen.clearScreen();
+    Brain.Screen.setCursor(1, 1);
+    frontVisionSensor.takeSnapshot(FRONT_YELLOWMOGO);
+    Brain.Screen.print(frontVisionSensor.largestObject.centerX);
+    double error = 158 - frontVisionSensor.largestObject.centerX;
+    double pow = error * kP;
+
+    rightMotors.spin(fwd, pow, pct);
+    leftMotors.spin(fwd, -pow, pct);
+
+    Brain.Screen.render();
+    this_thread::sleep_for(10);
+  }
+}

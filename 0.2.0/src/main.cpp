@@ -62,8 +62,8 @@ int main(){
     Brain.Screen.setCursor(1,1);
     Brain.Screen.print(leftRotationSensor.position(deg));
     Brain.Screen.render();*/
-    /*Controller.Screen.clearLine(3);
-    Controller.Screen.print(fourBarRotationSensor.angle(deg));*/
+    Controller.Screen.clearLine(3);
+    Controller.Screen.print(fourBarRotationSensor.angle(deg));
 
     checkDevices(false);
 

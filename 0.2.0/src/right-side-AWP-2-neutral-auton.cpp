@@ -1,34 +1,24 @@
 #include "vex.h"
 #include "auton-functions.h"
 
-void visionTurn(double timeout = 0){
-  const double kP = 0.13;
-  const double target = 158;
+void visionTurn(vision &sensor, vision::signature &sig, int timeout = 0, double kP = 0.2){
+  double error = 1/0.;
+  double pow = 1/0.;
 
-  timer dTimer;
+  timer visionTimer;
 
-  while(true){
-    if(dTimer.time(msec) > timeout && timeout != 0) break;
-    frontVisionSensor.takeSnapshot(tc == RED ? BACK_REDMOGO : BACK_BLUEMOGO);
-    vision::object &obj = frontVisionSensor.largestObject;
+  while(std::abs(error) > 5 && std::abs(pow) > 5){
+    if(timeout != 0 && visionTimer.time(msec) > timeout) break;
 
-    double currentPos = obj.centerX;
-    
-    if(!obj.exists){
-      Brain.Screen.clearScreen();
-      Brain.Screen.setCursor(1, 1);
-      Brain.Screen.print("OBJECT NOT FOUND");
-      Brain.Screen.render();
-    }
-    
-    double error = target - currentPos;
-    double pow = error * kP;
+    frontVisionSensor.takeSnapshot(sig);
+
+    error = 158 - frontVisionSensor.largestObject.centerX;
+    pow = error * kP;
 
     leftMotors.spin(fwd, -pow, pct);
     rightMotors.spin(fwd, pow, pct);
 
-    if(error < 2.5) break;
-    wait(10, msec);
+    this_thread::sleep_for(15);
   }
   driveMotors.stop();
 }
@@ -109,11 +99,13 @@ void rightSideAWP1NeutralAuton(){
   driveMotors.spin(fwd, -12, volt);
   this_thread::sleep_for(100);
   fourBarMotor.stop(hold);
-  waitUntil(pt::x() < 5);
+  waitUntil(pt::x() < 15);
   driveMotors.stop();
+  turnToAngle(M_PI, 900);
+  toggleClaw();
 
   //drop first yellow
-  driveMotors.spin(fwd, 50, pct);
+  /*driveMotors.spin(fwd, 50, pct);
   waitUntil(pt::x() > 10.25);
   driveMotors.stop();
   turnToAngle(M_PI_2, 1000);
@@ -123,44 +115,14 @@ void rightSideAWP1NeutralAuton(){
   driveRelative(15, 1000);
   toggleClaw();
   this_thread::sleep_for(75);
-  driveRelative(-14, 1000);
+  driveRelative(-14, 1000);*/
 
   //get tall yellow
-  turnToAngle(M_PI_4 + 0.06125, 3000);
-  /*timer visionTimeout;
-  const double kP = 0.13;
-  const double target = 158;
-  while(visionTimeout.time(msec) < 2000){
-    frontVisionSensor.takeSnapshot(FRONT_YELLOWMOGO);
-    vision::object &obj = frontVisionSensor.largestObject;
-
-    double currentPos = obj.centerX;
-    
-    if(!obj.exists){
-      Brain.Screen.clearScreen();
-      Brain.Screen.setCursor(1, 1);
-      Brain.Screen.print("OBJECT NOT FOUND");
-      Brain.Screen.render();
-    }
-    
-    double error = target - currentPos;
-    double pow = error * kP;
-
-    Brain.Screen.clearScreen();
-    Brain.Screen.setCursor(1, 1);
-    Brain.Screen.print("%d", currentPos);
-    Brain.Screen.setCursor(2, 1);
-    Brain.Screen.print("%d", error);
-    Brain.Screen.render();
-
-    leftMotors.spin(fwd, -pow, pct);
-    rightMotors.spin(fwd, pow, pct);
-
-    if(error < 7) break;
-    wait(10, msec);
-  }
-  driveMotors.stop();*/
-  driveRelative(50, 2000, verySlowFwd);
+  driveRelative(-5, 300);
+  turnToAngle(0, 700);
+  driveRelative(24, 1200);
+  visionTurn(frontVisionSensor, FRONT_YELLOWMOGO, 1000);
+  driveRelative(45, 2000, verySlowFwd);
   toggleClaw();
   fourBarMotor.spin(fwd, 12, volt);
   this_thread::sleep_for(25);

@@ -29,7 +29,7 @@ motor fourBarMotor(PORT1, ratio36_1, true);
 
 const double fourBarRotationOffset = 15;
 const double fourBarMinPos = 18.5;
-const double fourBarMaxPos = 120;
+const double fourBarMaxPos = 119;
 rotation_x fourBarRotationSensor(PORT12, true, fourBarRotationOffset);
 
 motor ringLiftMotor(PORT14, ratio6_1, false);
