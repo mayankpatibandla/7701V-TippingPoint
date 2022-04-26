@@ -1,8 +1,7 @@
 #include "vex.h"
-#include "odom.h"
 #include "auton-functions.h"
-#include <vector>
 
+/*
 void testAuton(){
   Brain.Screen.setFont(mono60);
 
@@ -39,4 +38,4 @@ void testAuton(){
     wait(10, msec);
   }
   driveMotors.stop();
-}
+}*/
