@@ -1,24 +1,49 @@
 #include "vex.h"
 #include "auton-functions.h"
 
-void visionTurn(vision &sensor, vision::signature &sig, int timeout = 0, double kP = 0.2){
+enum visionSensors{
+  FRONTVISION, BACKVISION
+};
+
+void visionTurn(enum visionSensors sensor, vision::signature &sig, int timeout = 0, double kP = 0.2){
   double error = 1/0.;
   double pow = 1/0.;
 
   timer visionTimer;
 
-  while(std::abs(error) > 5 && std::abs(pow) > 5){
-    if(timeout != 0 && visionTimer.time(msec) > timeout) break;
+  switch(sensor){
+    case FRONTVISION:{
+      while(std::abs(error) > 5 && std::abs(pow) > 5){
+        if(timeout != 0 && visionTimer.time(msec) > timeout) break;
 
-    frontVisionSensor.takeSnapshot(sig);
+        frontVisionSensor.takeSnapshot(sig);
 
-    error = 158 - frontVisionSensor.largestObject.centerX;
-    pow = error * kP;
+        error = 158 - frontVisionSensor.largestObject.centerX;
+        pow = error * kP;
 
-    leftMotors.spin(fwd, -pow, pct);
-    rightMotors.spin(fwd, pow, pct);
+        leftMotors.spin(fwd, -pow, pct);
+        rightMotors.spin(fwd, pow, pct);
 
-    this_thread::sleep_for(15);
+        this_thread::sleep_for(15);
+      }
+      driveMotors.stop();
+    } break;
+    case BACKVISION:{
+      while(std::abs(error) > 5 && std::abs(pow) > 5){
+        if(timeout != 0 && visionTimer.time(msec) > timeout) break;
+
+        backVisionSensor.takeSnapshot(sig);
+
+        error = 158 - backVisionSensor.largestObject.centerX;
+        pow = error * kP;
+
+        leftMotors.spin(fwd, -pow, pct);
+        rightMotors.spin(fwd, pow, pct);
+
+        this_thread::sleep_for(15);
+      }
+      driveMotors.stop();
+    } break;
   }
   driveMotors.stop();
 }
@@ -90,7 +115,14 @@ void rightSideAWP1NeutralAuton(){
   //get first yellow
   driveMotors.spin(fwd, 12, volt);
   toggleClaw();
-  waitUntil(pt::x() > 45);
+  this_thread::sleep_for(300);
+  waitUntil(pt::x() > 45 || 
+    (distanceSensor.isObjectDetected() && 
+    (
+      distanceSensor.objectDistance(inches)) <= 7.25 &&
+      distanceSensor.objectDistance(inches) > 0
+    )
+  );
   driveMotors.stop();
   this_thread::sleep_for(25);
   toggleClaw();
@@ -101,7 +133,7 @@ void rightSideAWP1NeutralAuton(){
   fourBarMotor.stop(hold);
   waitUntil(pt::x() < 15);
   driveMotors.stop();
-  turnToAngle(M_PI, 900);
+  turnToAngle(-M_PI_2-1, 900);
   toggleClaw();
 
   //drop first yellow
@@ -119,10 +151,10 @@ void rightSideAWP1NeutralAuton(){
 
   //get tall yellow
   driveRelative(-5, 300);
-  turnToAngle(0, 700);
-  driveRelative(24, 1200);
-  visionTurn(frontVisionSensor, FRONT_YELLOWMOGO, 1000);
-  driveRelative(45, 2000, verySlowFwd);
+  turnToAngle(M_PI_4, 700);
+  driveRelative(12, 700);
+  visionTurn(FRONTVISION, FRONT_YELLOWMOGO, 1150);
+  driveRelative(38, 2000, verySlowFwd);
   toggleClaw();
   fourBarMotor.spin(fwd, 12, volt);
   this_thread::sleep_for(25);
@@ -131,10 +163,13 @@ void rightSideAWP1NeutralAuton(){
   fourBarMotor.stop(hold);
   toggleBackLift();
   turnToAngle(M_PI_4 + 0.09, 2000);
-  driveRelative(-60, 2750);
+  driveRelative(-50, 2750);
+  visionTurn(BACKVISION, BACK_BLUEMOGO, 1000);
+  driveRelative(-24, 1200);
   toggleBackLift();
   this_thread::sleep_for(50);
   ringLiftMotor.spin(fwd, 12, volt);
   turnToAngle(0, 1250);
-  driveRelative(-18, 2000);
+  driveRelative(-10, 1000);
+  toggleBackLift();
 }

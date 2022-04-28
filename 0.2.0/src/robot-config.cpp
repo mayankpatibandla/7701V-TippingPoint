@@ -35,6 +35,7 @@ rotation_x fourBarRotationSensor(PORT12, true, fourBarRotationOffset);
 motor ringLiftMotor(PORT14, ratio6_1, false);
 
 inertial inertialSensor(PORT13);
+distance distanceSensor(PORT2);
 
 digital_out leftClawSolenoid(Brain.ThreeWirePort.A);
 digital_out rightClawSolenoid(Brain.ThreeWirePort.B);

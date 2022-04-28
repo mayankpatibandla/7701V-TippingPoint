@@ -56,6 +56,7 @@ extern const double fourBarMaxPos;
 extern motor ringLiftMotor;
 
 extern inertial inertialSensor;
+extern distance distanceSensor;
 
 extern digital_out leftClawSolenoid;
 extern digital_out rightClawSolenoid;
