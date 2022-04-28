@@ -1,6 +1,13 @@
 #pragma once
+#include "vex.h"
 #include "auton-config.h"
 #include "odom.h"
+
+enum visionSensors{
+  FRONTVISION, BACKVISION
+};
+
+extern void visionTurn(enum visionSensors sensor, vision::signature &sig, int timeout = 0, double kP = 0.2);
 
 class PID{
 public:

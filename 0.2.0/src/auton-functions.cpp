@@ -1,8 +1,50 @@
-#include "vex.h"
 #include "auton-functions.h"
 #include "autons.h"
 
 using namespace vex;
+
+void visionTurn(enum visionSensors sensor, vision::signature &sig, int timeout, double kP){
+  double error = 1/0.;
+  double pow = 1/0.;
+
+  timer visionTimer;
+
+  switch(sensor){
+    case FRONTVISION:{
+      while(std::abs(error) > 5 && std::abs(pow) > 5){
+        if(timeout != 0 && visionTimer.time(msec) > timeout) break;
+
+        frontVisionSensor.takeSnapshot(sig);
+
+        error = 158 - frontVisionSensor.largestObject.centerX;
+        pow = error * kP;
+
+        leftMotors.spin(fwd, -pow, pct);
+        rightMotors.spin(fwd, pow, pct);
+
+        this_thread::sleep_for(15);
+      }
+      driveMotors.stop();
+    } break;
+    case BACKVISION:{
+      while(std::abs(error) > 5 && std::abs(pow) > 5){
+        if(timeout != 0 && visionTimer.time(msec) > timeout) break;
+
+        backVisionSensor.takeSnapshot(sig);
+
+        error = 158 - backVisionSensor.largestObject.centerX;
+        pow = error * kP;
+
+        leftMotors.spin(fwd, -pow, pct);
+        rightMotors.spin(fwd, pow, pct);
+
+        this_thread::sleep_for(15);
+      }
+      driveMotors.stop();
+    } break;
+  }
+  driveMotors.stop();
+}
 
 PID::PID(double kP, double kI, double kD, double maxError, double dT):
   kP(kP), kI(kI), kD(kD), maxError(maxError), dT(dT)
