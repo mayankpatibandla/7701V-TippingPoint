@@ -257,7 +257,6 @@ void toggleClaw(){
   leftClawSolenoid.set(!leftClawSolenoid.value());
   rightClawSolenoid.set(!rightClawSolenoid.value());
 }
-
 void setClaw(bool value){
   leftClawSolenoid.set(value);
   rightClawSolenoid.set(value);
@@ -266,9 +265,15 @@ void setClaw(bool value){
 void toggleBackLift(){
   backLiftSolenoid.set(!backLiftSolenoid.value());
 }
-
 void setBackLift(bool value){
   backLiftSolenoid.set(value);
+}
+
+void togglePreload(){
+  preloadSolenoid.set(!preloadSolenoid.value());
+}
+void setPreload(bool value){
+  preloadSolenoid.set(value);
 }
 
 void auton(){

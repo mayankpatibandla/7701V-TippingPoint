@@ -36,3 +36,6 @@ extern void setClaw(bool value);
 
 extern void toggleBackLift();
 extern void setBackLift(bool value);
+
+extern void togglePreload();
+extern void setPreload(bool value);
