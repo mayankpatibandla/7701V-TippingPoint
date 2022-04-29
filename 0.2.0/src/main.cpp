@@ -18,7 +18,7 @@ const unsigned short int visionColorCooldown = 25;
 uint32_t prevVisionColorTime = Brain.Timer.system();
 
 ColorUtil::hsl hsl_ledColor = {0, 1, 0.5};
-const double deltaFade = 0.0784313725;
+const double deltaFade = 0.00980392156;
 
 void updateVisionLeds(){
   ColorUtil::rgb ledColor;
