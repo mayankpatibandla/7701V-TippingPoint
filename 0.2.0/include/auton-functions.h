@@ -7,7 +7,7 @@ enum visionSensors{
   FRONTVISION, BACKVISION
 };
 
-extern void visionTurn(enum visionSensors sensor, vision::signature &sig, int timeout = 0, double kP = 0.2);
+extern void visionTurn(enum visionSensors sensor, vision::signature &sig, int timeout = 0, double kP = 0.175);
 
 class PID{
 public:

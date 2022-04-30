@@ -32,6 +32,7 @@ void driver(){
 
   Controller.ButtonA.pressed(toggleClaw);
   Controller.ButtonY.pressed(toggleBackLift);
+  Controller.ButtonDown.pressed(togglePreload);
 
   while(true){
     //auton test
