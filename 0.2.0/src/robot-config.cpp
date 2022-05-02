@@ -40,7 +40,6 @@ distance distanceSensor(PORT2);
 digital_out leftClawSolenoid(Brain.ThreeWirePort.A);
 digital_out rightClawSolenoid(Brain.ThreeWirePort.B);
 digital_out backLiftSolenoid(Brain.ThreeWirePort.C);
-digital_out preloadSolenoid(Brain.ThreeWirePort.D);
 
 motor_group leftMotors(frontLeftMotor, middleLeftMotor, backLeftMotor);
 motor_group rightMotors(frontRightMotor, middleRightMotor, backRightMotor);
@@ -282,24 +281,6 @@ bool checkDevices(bool p_cancel)
     {
       ss << ses << "BACK TRACKER"; ss2 << s2 << backRotationSensor.index() + 1;
       error(ss.str(), ss2.str(), !backRotationSensor.installed());
-      return false;
-    }
-    else if(!distanceSensor.installed())
-    {
-      ss << ses << "CLAW DISTANCE"; ss2 << s2 << distanceSensor.index() + 1;
-      error(ss.str(), ss2.str(), !distanceSensor.installed());
-      return false;
-    }
-    else if(!frontVisionSensor.installed())
-    {
-      ss << ses << "FRONT VISION"; ss2 << s2 << frontVisionSensor.index() + 1;
-      error(ss.str(), ss2.str(), !frontVisionSensor.installed());
-      return false;
-    }
-    else if(!backVisionSensor.installed())
-    {
-      ss << ses << "BACK VISION"; ss2 << s2 << backVisionSensor.index() + 1;
-      error(ss.str(), ss2.str(), !backVisionSensor.installed());
       return false;
     }
     else return true;

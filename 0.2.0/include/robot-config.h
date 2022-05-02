@@ -61,7 +61,6 @@ extern distance distanceSensor;
 extern digital_out leftClawSolenoid;
 extern digital_out rightClawSolenoid;
 extern digital_out backLiftSolenoid;
-extern digital_out preloadSolenoid;
 
 extern motor_group leftMotors;
 extern motor_group rightMotors;
