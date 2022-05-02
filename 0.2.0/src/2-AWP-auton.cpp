@@ -4,13 +4,22 @@
 //LEFT AWP OTHER
 //left get 1 yellow
 void twoAWPAuton(){
+  const double goalDistance = 4;
   toggleClaw();
   driveMotors.spin(fwd, 12, volt);
-  waitUntil(pt::x() > 60);
-  driveMotors.stop();
-  this_thread::sleep_for(50);
+  this_thread::sleep_for(25);
+  togglePreload();
+  this_thread::sleep_for(200);
+  waitUntil(pt::x() > 50 || 
+    (distanceSensor.isObjectDetected() && 
+    (
+      distanceSensor.objectDistance(inches)) <= goalDistance &&
+      distanceSensor.objectDistance(inches) > 0
+    )
+  );
+  this_thread::sleep_for(75);
   toggleClaw();
-  this_thread::sleep_for(50);
+  this_thread::sleep_for(25);
   driveMotors.spin(fwd, -12, volt);
   this_thread::sleep_for(2500);
   driveMotors.stop();

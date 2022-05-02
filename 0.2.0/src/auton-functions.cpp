@@ -16,6 +16,8 @@ void visionTurn(enum visionSensors sensor, vision::signature &sig, int timeout, 
 
         frontVisionSensor.takeSnapshot(sig);
 
+        if(!frontVisionSensor.largestObject.exists) Controller.rumble(rumblePulse);
+
         error = 158 - frontVisionSensor.largestObject.centerX;
         pow = error * kP;
 
