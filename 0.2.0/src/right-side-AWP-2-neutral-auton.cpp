@@ -65,19 +65,21 @@ void rightSideAWP2NeutralAuton(){
 //RIGHT AWP OTHER
 //3 goal
 void rightSideAWP1NeutralAuton(){
-  const double goalDistance = 4;
+  timer autonTimer;
+  //const double goalDistance = 4;
   //get first yellow
   driveMotors.spin(fwd, 12, volt);
   toggleClaw();
-  this_thread::sleep_for(400);
-  waitUntil(pt::x() > 45 || 
-    (distanceSensor.isObjectDetected() && 
-    (
-      distanceSensor.objectDistance(inches)) <= goalDistance &&
+  //this_thread::sleep_for(400);
+  /*waitUntil(pt::x() > 45 || 
+    ((
+      distanceSensor.isObjectDetected() && 
+      distanceSensor.objectDistance(inches) <= goalDistance &&
       distanceSensor.objectDistance(inches) > 0
-    )
-  );
-  this_thread::sleep_for(75);
+    ) && pt::x() > 43)
+  );*/
+  driveRelative(46, 1000);
+  this_thread::sleep_for(50);
   toggleClaw();
   this_thread::sleep_for(25);
   fourBarMotor.spin(fwd, 12, volt);
@@ -90,13 +92,16 @@ void rightSideAWP1NeutralAuton(){
   toggleClaw();
 
   //get tall yellow
+  fourBarMotor.spin(fwd, -12, volt);
   driveRelative(-5, 300);
   turnToAngle(M_PI_4-0.4, 700);
   driveRelative(12, 700);
+  fourBarMotor.stop();
   visionTurn(FRONTVISION, FRONT_YELLOWMOGO, 1500);
   //driveRelative(20, 1500);
   //visionTurn(FRONTVISION, FRONT_YELLOWMOGO, 1150);
   driveRelative(38, 2000, verySlowFwd);
+  this_thread::sleep_for(200);
   toggleClaw();
   fourBarMotor.spin(fwd, 12, volt);
   this_thread::sleep_for(25);
@@ -105,16 +110,40 @@ void rightSideAWP1NeutralAuton(){
   fourBarMotor.stop(hold);
   toggleBackLift();
   //turnToAngle(M_PI_4 + 0.09, 2000);
-  driveRelative(-50, 2750);
+  driveRelative(-45, 2750);
+  fourBarMotor.spin(fwd, 12, volt);
   if(tc == BLUE)
-    visionTurn(BACKVISION, BACK_BLUEMOGO, 1000);
+    visionTurn(BACKVISION, BACK_BLUEMOGO, 1200);
   else if(tc == RED)
-    visionTurn(BACKVISION, BACK_REDMOGO, 1000);
-  driveRelative(-24, 1200);
+    visionTurn(BACKVISION, BACK_REDMOGO, 1200);
+  this_thread::sleep_for(150);
+  fourBarMotor.stop();
+  driveRelative(-30, 800);
+  this_thread::sleep_for(150);
   toggleBackLift();
   this_thread::sleep_for(50);
   ringLiftMotor.spin(fwd, 12, volt);
-  turnToAngle(0, 1250);
-  driveRelative(-18, 1300);
-  toggleBackLift();
+
+  if(autonTimer.time(msec) > 13500){
+    turnToAngle(0, 700);
+    driveMotors.spin(fwd, -7.5, volt);
+    waitUntil(pt::x() < -2);
+    toggleBackLift();
+  }
+  else{
+    fourBarMotor.spin(fwd, 12, volt);
+    turnToAngle(M_PI_2, 500);
+    this_thread::sleep_for(150);
+    fourBarMotor.stop(hold);
+    driveRelative(4, 300, verySlowFwd);
+    this_thread::sleep_for(150);
+    turnToAngle(0, 1100);
+    driveMotors.spin(fwd, 7.5, volt);
+    waitUntil(autonTimer.time(msec) > 14000 || pt::x() > 45);
+    driveMotors.spin(fwd, -12, volt);
+    waitUntil(autonTimer.time(msec) > 14930);
+    driveMotors.stop();
+    this_thread::sleep_for(63);
+    toggleBackLift();
+  }
 }
