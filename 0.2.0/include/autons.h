@@ -5,6 +5,7 @@ extern void testAuton();
 
 extern void twoAWPAuton();
 extern void rightMidFirstAuton();
+extern void rightMidJuke();
 extern void leftMidFirstAuton();
 
 extern void rightSideAWP2NeutralAuton();

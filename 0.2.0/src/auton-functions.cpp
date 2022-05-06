@@ -332,7 +332,7 @@ void auton(){
                 }break;
                 case OTHER:{
                   //RED RIGHT NEUTRAL OTHER
-                  rightMidFirstAuton();
+                  rightMidJuke();
                 }break;
               }
             }break;

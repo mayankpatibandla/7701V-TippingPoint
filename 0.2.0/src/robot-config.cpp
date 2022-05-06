@@ -48,8 +48,8 @@ motor_group driveMotors(frontLeftMotor, middleLeftMotor, backLeftMotor, frontRig
 motor_group allMotors(frontLeftMotor, middleLeftMotor, backLeftMotor, frontRightMotor, middleRightMotor, backRightMotor, fourBarMotor, ringLiftMotor);
 
 vex::vision::signature FRONT_REDMOGO = vex::vision::signature (1, 6229, 8323, 7276, -975, -167, -571, 3, 0);
-vex::vision::signature FRONT_BLUEMOGO = vex::vision::signature (2, -3553, -2899, -3226, 11669, 14417, 13043, 3, 0);
-vex::vision::signature FRONT_YELLOWMOGO = vex::vision::signature (3, 99, 2023, 1061, -3867, -3197, -3532, 3, 0);
+vex::vision::signature FRONT_BLUEMOGO = vex::vision::signature (2, -1717, -1249, -1483, 6841, 8831, 7836, 3.9, 0);
+vex::vision::signature FRONT_YELLOWMOGO = vex::vision::signature (3, -51, 97, 23, -3381, -2915, -3148, 9.1, 0);
 vex::vision::signature FRONT_SIG_4 = vex::vision::signature (4, 0, 0, 0, 0, 0, 0, 2.5, 0);
 vex::vision::signature FRONT_SIG_5 = vex::vision::signature (5, 0, 0, 0, 0, 0, 0, 2.5, 0);
 vex::vision::signature FRONT_SIG_6 = vex::vision::signature (6, 0, 0, 0, 0, 0, 0, 2.5, 0);
@@ -58,8 +58,8 @@ vex::vision::signature FRONT_SIG_7 = vex::vision::signature (7, 0, 0, 0, 0, 0, 0
 vision frontVisionSensor(PORT3, 50, FRONT_REDMOGO, FRONT_BLUEMOGO, FRONT_YELLOWMOGO, FRONT_SIG_4, FRONT_SIG_5, FRONT_SIG_6, FRONT_SIG_7);
 
 vex::vision::signature BACK_REDMOGO = vex::vision::signature (1, 6229, 8323, 7276, -975, -167, -571, 3, 0);
-vex::vision::signature BACK_BLUEMOGO = vex::vision::signature (2, -3553, -2899, -3226, 11669, 14417, 13043, 3, 0);
-vex::vision::signature BACK_YELLOWMOGO = vex::vision::signature (3, 99, 2023, 1061, -3867, -3197, -3532, 3, 0);
+vex::vision::signature BACK_BLUEMOGO = vex::vision::signature (2, -3753, -3067, -3410, 2417, 10831, 6624, 3.1, 0);
+vex::vision::signature BACK_YELLOWMOGO = vex::vision::signature (3, 749, 1159, 954, -3811, -3255, -3532, 7.2, 0);
 vex::vision::signature BACK_SIG_4 = vex::vision::signature (4, 0, 0, 0, 0, 0, 0, 2.5, 0);
 vex::vision::signature BACK_SIG_5 = vex::vision::signature (5, 0, 0, 0, 0, 0, 0, 2.5, 0);
 vex::vision::signature BACK_SIG_6 = vex::vision::signature (6, 0, 0, 0, 0, 0, 0, 2.5, 0);
@@ -147,7 +147,7 @@ void autonInit(){
   av = static_cast<autonVersion>(int_av);
   at = static_cast<autonType>(int_at);
 
-  std::string teamColorStrings[] = {"RED", "BLUE", "SKILLS", "TEST", "NONE"};
+  /*std::string teamColorStrings[] = {"RED", "BLUE", "SKILLS", "TEST", "NONE"};
   std::string teamSideStrings[] = {"LEFT", "RIGHT"};
   std::string autonVersionStrings[] = {"AWP", "NEUTRAL"};
   std::string autonTypeStrings[] = {"MAIN", "OTHER"};
@@ -157,7 +157,89 @@ void autonInit(){
     teamSideStrings[int_ts].c_str(),
     autonVersionStrings[int_av].c_str(),
     autonTypeStrings[int_at].c_str()
-  );
+  );*/
+
+  //print auton to controller
+  std::ostringstream autonDescStream;
+  autonDescStream.clear();
+  bool next = false;
+
+  //color
+  switch(tc){
+    case RED:{
+      autonDescStream << "RED ";
+      next = true;
+      } break;
+    case BLUE:{
+      autonDescStream << "BLUE ";
+      next = true;
+    } break;
+    case SKILLS:{
+      autonDescStream  << "SKILLS AUTON";
+    }break;
+    case TEST:{
+      autonDescStream << "TEST AUTON";
+    }break;
+    case NONE:{
+      autonDescStream << "NO AUTON";
+    }break;
+    default:{
+      autonDescStream << "INVALID INPUT";
+    }break;
+  }
+  //side
+  if(next){
+  switch(ts){
+    case LEFT:{
+      switch(av){
+        case AWP:{
+          switch(at){
+            case MAIN:{
+              autonDescStream << "UNFINISHED";
+            }break;
+            case OTHER:{
+              autonDescStream << "1 yellow + preload";
+            }break;
+          }
+        }break;
+        case NEUTRAL:{
+          switch(at){
+            case MAIN:{
+              autonDescStream << "MID FIRST (Doesn't work)";
+            }break;
+            case OTHER:{
+              autonDescStream << "MID FIRST (Doesn't work)";
+            }break;
+          }
+        }break;
+      }
+    }break;
+    case RIGHT:{
+      switch(av){
+        case AWP:{
+          switch(at){
+            case MAIN:{
+              autonDescStream << "Line of rings (~)";
+            }break;
+            case OTHER:{
+              autonDescStream << "3 goal";
+            }break;
+          }
+        }break;
+        case NEUTRAL:{
+          switch(at){
+            case MAIN:{
+              autonDescStream << "Mid first (unfinished)";
+            }break;
+            case OTHER:{
+              autonDescStream << "Mid Juke (unfinished)";
+            }break;
+          }
+        }break;
+      }
+    }break;
+  }}
+  Controller.Screen.print(autonDescStream.str().c_str());
 }
 
 //set motor brake

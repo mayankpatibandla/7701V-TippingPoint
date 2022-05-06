@@ -51,33 +51,76 @@ void twoAWPAuton(){
   toggleBackLift();
 }
 
-//RIGHT NEUTRAL MAIN or OTHER
+//RIGHT NEUTRAL MAIN
 void rightMidFirstAuton(){
+  timer autonTimer;
+  //const double goalDistance = 4;
+  //get first yellow
   driveMotors.spin(fwd, 12, volt);
   toggleClaw();
-  waitUntil(pt::x() > 54);
-  driveMotors.stop();
-  this_thread::sleep_for(25);
+  //this_thread::sleep_for(400);
+  /*waitUntil(pt::x() > 45 || 
+    ((
+      distanceSensor.isObjectDetected() && 
+      distanceSensor.objectDistance(inches) <= goalDistance &&
+      distanceSensor.objectDistance(inches) > 0
+    ) && pt::x() > 43)
+  );*/
+  driveRelative(53, 0, slowFwd);
+  this_thread::sleep_for(50);
   toggleClaw();
   this_thread::sleep_for(25);
   fourBarMotor.spin(fwd, 12, volt);
   driveMotors.spin(fwd, -12, volt);
   this_thread::sleep_for(100);
   fourBarMotor.stop(hold);
-  waitUntil(pt::x() < 5);
-  driveMotors.stop();
+  waitUntil(pt::x() < 15);
 
   turnToAngle(M_PI_2, 1000);
-  if(tc == BLUE)
+  fourBarMotor.spin(fwd, 12, volt);
+  if(tc == BLUE){
     visionTurn(BACKVISION, BACK_BLUEMOGO, 1200);
-  else if(tc == RED)
+    visionTurn(BACKVISION, BACK_BLUEMOGO, 600);
+    visionTurn(BACKVISION, BACK_BLUEMOGO, 300);
+  }
+  else if(tc == RED){
     visionTurn(BACKVISION, BACK_REDMOGO, 1200);
+    visionTurn(BACKVISION, BACK_REDMOGO, 600);
+    visionTurn(BACKVISION, BACK_REDMOGO, 300);
+  }
+  this_thread::sleep_for(150);
+  fourBarMotor.stop(hold);
+  driveRelative(-30, 1000);
+  this_thread::sleep_for(150);
   toggleBackLift();
-  driveRelative(-36, 1000);
-  toggleBackLift();
-  driveRelative(5, 500);
+  this_thread::sleep_for(50);
+  ringLiftMotor.spin(fwd, 12, volt);
+
+  if(autonTimer.time(msec) > 13500){
+    turnToAngle(0, 700);
+    driveMotors.spin(fwd, -7.5, volt);
+    waitUntil(pt::x() < -2);
+    toggleBackLift();
+  }
+  else{
+    turnToAngle(M_PI_2, 500);
+    this_thread::sleep_for(150);
+    driveRelative(6.5, 400, verySlowFwd);
+    this_thread::sleep_for(150);
+    turnToAngle(0, 1100);
+    driveMotors.spin(fwd, 7.5, volt);
+    waitUntil(autonTimer.time(msec) > 14000 || pt::x() > 45);
+    driveMotors.spin(fwd, -12, volt);
+    waitUntil(autonTimer.time(msec) > 14930);
+    driveMotors.stop();
+    this_thread::sleep_for(30);
+    toggleBackLift();
+  }
 }
 
+void rightMidJuke(){
+
+}
 //LEFT NEUTRAL MAIN or OTHER
 void leftMidFirstAuton(){
   driveMotors.spin(fwd, 12, volt);
