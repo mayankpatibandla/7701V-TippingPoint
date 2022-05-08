@@ -304,7 +304,7 @@ void auton(){
                 }break;
                 case OTHER:{
                   //RED LEFT NEUTRAL OTHER
-                  leftMidFirstAuton();
+                  leftMidJuke();
                 }break;
               }
             }break;
@@ -364,7 +364,7 @@ void auton(){
                 }break;
                 case OTHER:{
                   //BLUE LEFT NEUTRAL OTHER
-                  leftMidFirstAuton();
+                  leftMidJuke();
                 }break;
               }
             }break;

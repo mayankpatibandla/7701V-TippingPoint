@@ -1,7 +1,7 @@
 /*vex-vision-config:begin*/
 #include "vex.h"
 vex::vision::signature REDMOGO = vex::vision::signature (1, 6229, 8323, 7276, -975, -167, -571, 3, 0);
-vex::vision::signature BLUEMOGO = vex::vision::signature (2, -3753, -3067, -3410, 2417, 10831, 6624, 3.1, 0);
+vex::vision::signature BLUEMOGO = vex::vision::signature (2, -3753, -3067, -3410, 2417, 10831, 6624, 5.1, 0);
 vex::vision::signature YELLOWMOGO = vex::vision::signature (3, 749, 1159, 954, -3811, -3255, -3532, 7.2, 0);
 vex::vision::signature SIG_4 = vex::vision::signature (4, 0, 0, 0, 0, 0, 0, 2.5, 0);
 vex::vision::signature SIG_5 = vex::vision::signature (5, 0, 0, 0, 0, 0, 0, 2.5, 0);

@@ -58,7 +58,7 @@ vex::vision::signature FRONT_SIG_7 = vex::vision::signature (7, 0, 0, 0, 0, 0, 0
 vision frontVisionSensor(PORT3, 50, FRONT_REDMOGO, FRONT_BLUEMOGO, FRONT_YELLOWMOGO, FRONT_SIG_4, FRONT_SIG_5, FRONT_SIG_6, FRONT_SIG_7);
 
 vex::vision::signature BACK_REDMOGO = vex::vision::signature (1, 6229, 8323, 7276, -975, -167, -571, 3, 0);
-vex::vision::signature BACK_BLUEMOGO = vex::vision::signature (2, -3753, -3067, -3410, 2417, 10831, 6624, 3.1, 0);
+vex::vision::signature BACK_BLUEMOGO = vex::vision::signature (2, -3753, -3067, -3410, 2417, 10831, 6624, 5.1, 0);
 vex::vision::signature BACK_YELLOWMOGO = vex::vision::signature (3, 749, 1159, 954, -3811, -3255, -3532, 7.2, 0);
 vex::vision::signature BACK_SIG_4 = vex::vision::signature (4, 0, 0, 0, 0, 0, 0, 2.5, 0);
 vex::vision::signature BACK_SIG_5 = vex::vision::signature (5, 0, 0, 0, 0, 0, 0, 2.5, 0);
@@ -195,7 +195,7 @@ void autonInit(){
         case AWP:{
           switch(at){
             case MAIN:{
-              autonDescStream << "UNFINISHED";
+              autonDescStream << "AWP FIRST (Don't use)";
             }break;
             case OTHER:{
               autonDescStream << "1 yellow + preload";
@@ -205,10 +205,10 @@ void autonInit(){
         case NEUTRAL:{
           switch(at){
             case MAIN:{
-              autonDescStream << "MID FIRST (Doesn't work)";
+              autonDescStream << "Left Mid First";
             }break;
             case OTHER:{
-              autonDescStream << "MID FIRST (Doesn't work)";
+              autonDescStream << "Left Mid Juke";
             }break;
           }
         }break;

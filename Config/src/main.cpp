@@ -179,7 +179,7 @@ void drawMenu(Menu& menu){
         case 0:{//awp
           switch(menu.multiButtons[3].state){
             case 0:{//main
-              autonDescStream << "UNFINISHED";
+              autonDescStream << "AWP first (Don't use)";
             }break;
             case 1:{//other
               autonDescStream << "1 yellow + preload";
@@ -189,10 +189,10 @@ void drawMenu(Menu& menu){
         case 1:{//neutral
           switch(menu.multiButtons[3].state){
             case 0:{//main
-              autonDescStream << "MID FIRST (Doesn't work)";
+              autonDescStream << "Left Mid First";
             }break;
             case 1:{//other
-              autonDescStream << "MID FIRST (Doesn't work)";
+              autonDescStream << "Left Mid Juke";
             }break;
           }
         }break;
