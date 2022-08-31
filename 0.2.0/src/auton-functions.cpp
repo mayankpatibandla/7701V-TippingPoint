@@ -16,6 +16,8 @@ void visionTurn(enum visionSensors sensor, vision::signature &sig, int timeout, 
 
         frontVisionSensor.takeSnapshot(sig);
 
+        if(!frontVisionSensor.largestObject.exists) Controller.rumble(rumblePulse);
+
         error = 158 - frontVisionSensor.largestObject.centerX;
         pow = error * kP;
 
@@ -302,7 +304,7 @@ void auton(){
                 }break;
                 case OTHER:{
                   //RED LEFT NEUTRAL OTHER
-                  leftMidFirstAuton();
+                  leftMidJuke();
                 }break;
               }
             }break;
@@ -330,7 +332,7 @@ void auton(){
                 }break;
                 case OTHER:{
                   //RED RIGHT NEUTRAL OTHER
-                  rightMidFirstAuton();
+                  rightMidJuke();
                 }break;
               }
             }break;
@@ -362,7 +364,7 @@ void auton(){
                 }break;
                 case OTHER:{
                   //BLUE LEFT NEUTRAL OTHER
-                  leftMidFirstAuton();
+                  leftMidJuke();
                 }break;
               }
             }break;

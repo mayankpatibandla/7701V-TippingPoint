@@ -1,6 +1,7 @@
 #include "vex.h"
 #include <vector>
 #include <fstream>
+#include <sstream>
 
 using namespace vex;
 using namespace std;
@@ -147,6 +148,88 @@ void drawMenu(Menu& menu){
     menu.multiButtons[i].height/2 + fontToInt(menu.multiButtons[i].font)/4 + menu.multiButtons[i].y,
     menu.multiButtons[i].text[menu.multiButtons[i].state].c_str());
   }
+
+  //print detailed description
+  ostringstream autonDescStream;
+  autonDescStream.clear();
+  bool next = false;
+
+  //color
+  switch(menu.multiButtons[0].state){
+    case 0: {next = true;} break;//red
+    case 1: {next = true;} break;//blue
+    case 2:{
+      autonDescStream  << "SKILLS AUTON";
+    }break;
+    case 3:{
+      autonDescStream << "TEST AUTON";
+    }break;
+    case 4:{
+      autonDescStream << "NO AUTON";
+    }break;
+    default:{
+      autonDescStream << "INVALID INPUT";
+    }break;
+  }
+  //side
+  if(next){
+  switch(menu.multiButtons[1].state){
+    case 0:{//left
+      switch(menu.multiButtons[2].state){
+        case 0:{//awp
+          switch(menu.multiButtons[3].state){
+            case 0:{//main
+              autonDescStream << "AWP first (Don't use)";
+            }break;
+            case 1:{//other
+              autonDescStream << "1 yellow + preload";
+            }break;
+          }
+        }break;
+        case 1:{//neutral
+          switch(menu.multiButtons[3].state){
+            case 0:{//main
+              autonDescStream << "Left Mid First";
+            }break;
+            case 1:{//other
+              autonDescStream << "Left Mid Juke";
+            }break;
+          }
+        }break;
+      }
+    }break;
+    case 1:{//right
+      switch(menu.multiButtons[2].state){
+        case 0:{//awp
+          switch(menu.multiButtons[3].state){
+            case 0:{//main
+              autonDescStream << "Line of rings (~)";
+            }break;
+            case 1:{//other
+              autonDescStream << "3 goal";
+            }break;
+          }
+        }break;
+        case 1:{//neutral
+          switch(menu.multiButtons[3].state){
+            case 0:{//main
+              autonDescStream << "Mid first (unfinished)";
+            }break;
+            case 1:{//other
+              autonDescStream << "Mid Juke (unfinished)";
+            }break;
+          }
+        }break;
+      }
+    }break;
+  }}
+
+  //print auton description
+  Brain.Screen.setFont(mono30);
+  Brain.Screen.setFillColor(black);
+  Brain.Screen.setPenColor(white);
+  Brain.Screen.printAt(130, 150, autonDescStream.str().c_str());
+  Brain.Screen.setFont(mono20);
 }
 
 int useMenu(Menu& menu){

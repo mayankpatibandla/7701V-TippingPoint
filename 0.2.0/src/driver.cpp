@@ -32,6 +32,7 @@ void driver(){
 
   Controller.ButtonA.pressed(toggleClaw);
   Controller.ButtonY.pressed(toggleBackLift);
+  Controller.ButtonDown.pressed(togglePreload);
 
   while(true){
     //auton test
@@ -51,6 +52,9 @@ void driver(){
     }
     else{
       manualOverrideWasPressed = false;
+    }
+    if(Controller.ButtonLeft.pressing() && !Competition.isCompetitionSwitch() && !Competition.isFieldControl()){
+      visionTurn(FRONTVISION, FRONT_YELLOWMOGO, 2500);
     }
 
     if(Controller.ButtonLeft.pressing() && Controller.ButtonUp.pressing() && Controller.ButtonR1.pressing() && Controller.ButtonR2.pressing() && dumpAirTimer.time(msec) > 9){
