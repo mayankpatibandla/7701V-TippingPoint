@@ -40,14 +40,13 @@ distance distanceSensor(PORT2);
 digital_out leftClawSolenoid(Brain.ThreeWirePort.A);
 digital_out rightClawSolenoid(Brain.ThreeWirePort.B);
 digital_out backLiftSolenoid(Brain.ThreeWirePort.C);
-digital_out preloadSolenoid(Brain.ThreeWirePort.D);
 
 motor_group leftMotors(frontLeftMotor, middleLeftMotor, backLeftMotor);
 motor_group rightMotors(frontRightMotor, middleRightMotor, backRightMotor);
 motor_group driveMotors(frontLeftMotor, middleLeftMotor, backLeftMotor, frontRightMotor, middleRightMotor, backRightMotor);
 motor_group allMotors(frontLeftMotor, middleLeftMotor, backLeftMotor, frontRightMotor, middleRightMotor, backRightMotor, fourBarMotor, ringLiftMotor);
 
-vex::vision::signature FRONT_REDMOGO = vex::vision::signature (1, 6229, 8323, 7276, -975, -167, -571, 3, 0);
+vex::vision::signature FRONT_REDMOGO = vex::vision::signature (1, 6229, 8323, 7276, -975, -167, -571, 4.5, 0);
 vex::vision::signature FRONT_BLUEMOGO = vex::vision::signature (2, -3553, -2899, -3226, 11669, 14417, 13043, 3, 0);
 vex::vision::signature FRONT_YELLOWMOGO = vex::vision::signature (3, 99, 2023, 1061, -3867, -3197, -3532, 3, 0);
 vex::vision::signature FRONT_SIG_4 = vex::vision::signature (4, 0, 0, 0, 0, 0, 0, 2.5, 0);
@@ -57,7 +56,7 @@ vex::vision::signature FRONT_SIG_7 = vex::vision::signature (7, 0, 0, 0, 0, 0, 0
 //WIFI Name: VISION_DF1C
 vision frontVisionSensor(PORT3, 50, FRONT_REDMOGO, FRONT_BLUEMOGO, FRONT_YELLOWMOGO, FRONT_SIG_4, FRONT_SIG_5, FRONT_SIG_6, FRONT_SIG_7);
 
-vex::vision::signature BACK_REDMOGO = vex::vision::signature (1, 6229, 8323, 7276, -975, -167, -571, 3, 0);
+vex::vision::signature BACK_REDMOGO = vex::vision::signature (1, 6229, 8323, 7276, -975, -167, -571, 4.5, 0);
 vex::vision::signature BACK_BLUEMOGO = vex::vision::signature (2, -3553, -2899, -3226, 11669, 14417, 13043, 3, 0);
 vex::vision::signature BACK_YELLOWMOGO = vex::vision::signature (3, 99, 2023, 1061, -3867, -3197, -3532, 3, 0);
 vex::vision::signature BACK_SIG_4 = vex::vision::signature (4, 0, 0, 0, 0, 0, 0, 2.5, 0);
@@ -282,24 +281,6 @@ bool checkDevices(bool p_cancel)
     {
       ss << ses << "BACK TRACKER"; ss2 << s2 << backRotationSensor.index() + 1;
       error(ss.str(), ss2.str(), !backRotationSensor.installed());
-      return false;
-    }
-    else if(!distanceSensor.installed())
-    {
-      ss << ses << "CLAW DISTANCE"; ss2 << s2 << distanceSensor.index() + 1;
-      error(ss.str(), ss2.str(), !distanceSensor.installed());
-      return false;
-    }
-    else if(!frontVisionSensor.installed())
-    {
-      ss << ses << "FRONT VISION"; ss2 << s2 << frontVisionSensor.index() + 1;
-      error(ss.str(), ss2.str(), !frontVisionSensor.installed());
-      return false;
-    }
-    else if(!backVisionSensor.installed())
-    {
-      ss << ses << "BACK VISION"; ss2 << s2 << backVisionSensor.index() + 1;
-      error(ss.str(), ss2.str(), !backVisionSensor.installed());
       return false;
     }
     else return true;

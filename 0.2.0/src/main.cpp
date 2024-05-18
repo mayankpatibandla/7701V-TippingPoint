@@ -40,8 +40,8 @@ uint32_t prevRenderTime = Brain.Timer.system();
 
 void printOdomDebug(){
   Brain.Screen.clearScreen();
-  Brain.Screen.printAt(0, 20 , "Position X  . . . . %8f (in) ", pt::x());
-  Brain.Screen.printAt(0, 50 , "Position Y  . . . . %8f (in) ", pt::y());
+  Brain.Screen.printAt(0, 20 , "Position X  . . . . %8f (in)", pt::x());
+  Brain.Screen.printAt(0, 50 , "Position Y  . . . . %8f (in)", pt::y());
   Brain.Screen.printAt(0, 80 , "Theta (-inf, inf) . %8f (rad)", pt::theta());
   Brain.Screen.printAt(0, 110, "Theta [-Pi, Pi) . . %8f (rad)", pt::thetaWrapped(true));
   Brain.Screen.printAt(0, 140, "Theta [0, 2Pi)  . . %8f (rad)", pt::thetaWrapped(false));
